@@ -231,6 +231,10 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./fork.py
 子プロセス, pid=14834, 親プロセス, pid=14833
 ```
 
+2. os.execv() 関数 を呼び出す。
+2. 現在のプロセスのメモリを、新しいプロセスのデータで上書きする。
+2. 新しいプロセスの最初に実行すべき命令を実行開始する。
+
 
 ```
 ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ cat fork-and-exec.py
@@ -265,4 +269,6 @@ drwxr-xr-x 4 ishii_tdd ishii_tdd 4096 Jul 13 13:13 ..
 -rwxr-xr-x 1 ishii_tdd ishii_tdd  913 Jul 13 14:32 fork-and-exec.py
 -rwxr-xr-x 1 ishii_tdd ishii_tdd  785 Jul 13 14:02 fork.py
 ```
+
+
 
