@@ -390,3 +390,17 @@ falseコマンドが終了しました。: 1
 
 親プロセスがwait()関数などのシステムコールを呼ぶまえに、実行を終了した場合、その子プロセスは「孤児プロセス」となる。
 
+
+シグナル
+
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./intignore.py
+^C^C^C^Z
+[4]+  Stopped                 ./intignore.py
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ps -aux | grep intignore
+ishii_t+   15345  5.6  0.1  19268  9416 pts/0    T    15:52   0:04 /usr/bin/python3 ./intignore.py
+ishii_t+   15347  2.9  0.1  19268  9296 pts/0    T    15:53   0:01 /usr/bin/python3 ./intignore.py
+ishii_t+   15348  7.2  0.1  19268  9296 pts/0    T    15:53   0:02 /usr/bin/python3 ./intignore.py
+ishii_t+   15351  0.0  0.0  10076   648 pts/0    S+   15:53   0:00 grep --color=auto intignore
+```
+
