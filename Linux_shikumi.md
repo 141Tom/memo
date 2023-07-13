@@ -391,9 +391,22 @@ falseコマンドが終了しました。: 1
 親プロセスがwait()関数などのシステムコールを呼ぶまえに、実行を終了した場合、その子プロセスは「孤児プロセス」となる。
 
 
-シグナル
+### シグナル
+
+シグナルとは、あるプロセスが他のプロセスの何かを通知して、外部からの実行の流れを強制的に変えるための仕組みである。
+
+SIGSTOP : Ctrl + Z　、　SIGINT : Ctrl + C
 
 ```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ cat intignore.py
+#!/usr/bin/python3
+import signal
+
+# 第1引数にはハンドラを設定するシグナルの番号
+# 第2引数にはシグナルハンドラを設定する。
+signal.signal(signal.SIGINT, signal.SIG_IGN)
+while True:
+    pass
 ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./intignore.py
 ^C^C^C^Z
 [4]+  Stopped                 ./intignore.py
@@ -403,6 +416,16 @@ ishii_t+   15347  2.9  0.1  19268  9296 pts/0    T    15:53   0:01 /usr/bin/pyth
 ishii_t+   15348  7.2  0.1  19268  9296 pts/0    T    15:53   0:02 /usr/bin/python3 ./intignore.py
 ishii_t+   15351  0.0  0.0  10076   648 pts/0    S+   15:53   0:00 grep --color=auto intignore
 ```
+
+### セッションとプロセスグループなどの関係。
+
+セッションには、セッションID（SID）と呼ばれる一意の値が割り振られている。
+
+プロセスグループには、複数のプロセスをまとめてコントロールする、プロセスグループID（PGID）が割り振られている。
+
+
+![image](https://github.com/141Tom/memo/assets/135770970/22b16ff6-b4f4-4472-bc2d-82f56eea32d5)
+
 
 ### デーモン
 
