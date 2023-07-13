@@ -173,5 +173,9 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ldd pause2
         /lib64/ld-linux-x86-64.so.2 (0x00007fb97a25d000)
 ```
 
+## 第2章 プロセス管理（基礎編）
+
+ふぁ
+
 
 
