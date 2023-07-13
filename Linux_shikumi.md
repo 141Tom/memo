@@ -176,7 +176,7 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ldd pause2
 
 ## 第2章 プロセス管理（基礎編）
 
-プロセスの確認
+### プロセスの確認
 
 ```
 ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ps aux | grep ishii_t+
@@ -197,7 +197,6 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ps aux --no-header | wc -l
 61
 ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ls | wc -l
 8
-ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$
 ```
 
 
