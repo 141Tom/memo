@@ -119,6 +119,9 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ps -a
 ```
 
 ### ライブラリ
+
+Pythonプログラムを実行するとき、libcがリンクされている。つまり内部的に標準Cライブラリが使用されていることが分かる。
+
 ```
 ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ldd /usr/bin/python3
         linux-vdso.so.1 (0x00007fff8ad6c000)
@@ -144,5 +147,31 @@ libapparmor1:amd64      2.13.3-7ubuntu5.2
 libappindicator3-1      12.10.1+20.04.20200408.1-0ubuntu1
 libappstream4:amd64     0.12.10-2
 ```
+
+静的ライブラリと共有ライブラリ
+- 容量（サイズ）
+- 共有ライブラリがリンクされているかが異なる
+
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ cat pause.c
+#include <unistd.h>
+int main(void) {
+        pause();
+        return 0;
+}
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ cc -static -o pause pause.c
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ls -rlt pause
+-rwxr-xr-x 1 ishii_tdd ishii_tdd 871832 Jul 13 11:32 pause
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ldd pause
+        not a dynamic executable
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ cc -o pause2 pause.c
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ls -rlt pause2
+-rwxr-xr-x 1 ishii_tdd ishii_tdd 16696 Jul 13 11:32 pause2
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ldd pause2
+        linux-vdso.so.1 (0x00007ffe692eb000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb97a054000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007fb97a25d000)
+```
+
 
 
