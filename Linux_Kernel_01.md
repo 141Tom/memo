@@ -461,3 +461,9 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ps ajx
       1     291     291     291 ?             -1 Ssl    104   0:04 /usr/sbin/rsyslogd -n -iNONE
 ```
 
+
+## 第3章 Linuxの概要
+
+
+
+
