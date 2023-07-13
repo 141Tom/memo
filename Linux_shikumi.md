@@ -88,6 +88,35 @@ Linux 5.15.90.1-microsoft-standard-WSL2 (PCS27515)      07/13/2023      _x86_64_
 Average:          0      0.00      0.00      0.05      0.00      0.00     99.95
 ```
 
+論理CPU0で、無限ループするプログラム inf-loop.py を実行したら、%user が100となっていた。
+
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ cat inf-loop.py
+#!/usr/bin/python3
+while True:
+    pass
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ taskset -c 0 ./inf-loop.py &
+[1] 14348
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ sar -P 0 2 3
+Linux 5.15.90.1-microsoft-standard-WSL2 (PCS27515)      07/13/2023      _x86_64_        (8 CPU)
+
+10:56:49 AM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+10:56:51 AM       0    100.00      0.00      0.00      0.00      0.00      0.00
+10:56:53 AM       0    100.00      0.00      0.00      0.00      0.00      0.00
+10:56:55 AM       0    100.00      0.00      0.00      0.00      0.00      0.00
+Average:          0    100.00      0.00      0.00      0.00      0.00      0.00
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ps -a
+    PID TTY          TIME CMD
+   1177 pts/1    00:00:00 bash
+  14348 pts/0    00:00:42 inf-loop.py
+  14352 pts/0    00:00:00 ps
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ kill 14348
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ps -a
+    PID TTY          TIME CMD
+   1177 pts/1    00:00:00 bash
+  14353 pts/0    00:00:00 ps
+[1]+  Terminated              taskset -c 0 ./inf-loop.py
+```
 
 ### ライブラリ
 ```
