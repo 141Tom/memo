@@ -404,3 +404,37 @@ ishii_t+   15348  7.2  0.1  19268  9296 pts/0    T    15:53   0:02 /usr/bin/pyth
 ishii_t+   15351  0.0  0.0  10076   648 pts/0    S+   15:53   0:00 grep --color=auto intignore
 ```
 
+### デーモン
+
+デーモンは、常駐プロセスのことを指す。デーモンはシステムの開始から終了まで存在し続ける。
+- 端末から入出力する必要がないので、端末が割り振られていない
+- あらゆるログインセッションが終了しても影響を受けないように、独自のセッション（？）をもつ。
+- デーモンを生成したプロセス（親プロセス）がデーモンの終了を気にしないでいいように、initが親プロセスになる。
+
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ps ajx
+
+親プロセス プロセス プロセスグループ セッション 標準入出力デバイス(TTY)
+
+   PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+      0       1       1       1 ?             -1 Ss       0   0:03 /sbin/init
+      1       2       0       0 ?             -1 Sl       0   0:00 /init
+      2       5       0       0 ?             -1 Sl       0   0:00 plan9 --control-socket 6 --log-level 4 --server-fd 7 --pipe-fd 9 --log-truncate
+      1      58      58      58 ?             -1 S<s      0   0:04 /lib/systemd/systemd-journald
+      1      84      84      84 ?             -1 Ss       0   0:00 /lib/systemd/systemd-udevd
+      1      92      92      92 ?             -1 Ss     100   0:00 /lib/systemd/systemd-networkd
+      1     264     264     264 ?             -1 Ss       0   0:00 snapfuse /var/lib/snapd/snaps/core20_1950.snap /snap/core20/1950 -o ro,nodev,allow_other,s
+      1     265     265     265 ?             -1 Ss       0   0:00 snapfuse /var/lib/snapd/snaps/lxd_24061.snap /snap/lxd/24061 -o ro,nodev,allow_other,suid
+      1     266     266     266 ?             -1 Ss       0   0:00 snapfuse /var/lib/snapd/snaps/core20_1974.snap /snap/core20/1974 -o ro,nodev,allow_other,s
+      1     267     267     267 ?             -1 Ss       0   0:00 snapfuse /var/lib/snapd/snaps/snapd_19361.snap /snap/snapd/19361 -o ro,nodev,allow_other,s
+      1     268     268     268 ?             -1 Ss       0   0:03 snapfuse /var/lib/snapd/snaps/snapd_19457.snap /snap/snapd/19457 -o ro,nodev,allow_other,s
+      1     275     275     275 ?             -1 Ss     101   0:00 /lib/systemd/systemd-resolved
+      1     279     279     279 ?             -1 Ssl      0   0:00 /usr/lib/accountsservice/accounts-daemon
+      1     280     280     280 ?             -1 Ss     118   0:00 avahi-daemon: running [PCS27515-2.local]
+      1     281     281     281 ?             -1 Ss     103   0:01 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+      1     282     282     282 ?             -1 Ssl      0   0:00 /usr/sbin/NetworkManager --no-daemon
+      1     287     287     287 ?             -1 Ss       0   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+      1     289     289     289 ?             -1 Ssl      0   0:00 /usr/lib/policykit-1/polkitd --no-debug
+      1     291     291     291 ?             -1 Ssl    104   0:04 /usr/sbin/rsyslogd -n -iNONE
+```
+
