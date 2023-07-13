@@ -56,5 +56,14 @@ arch_prctl(ARCH_SET_FS, 0x55e0f0)       = 0
 sched_getaffinity(0, 8192, [0, 1, 2, 3, 4, 5, 6, 7]) = 32
 ```
 
+他にもlsコマンド
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ cat ls.log
+execve("/usr/bin/ls", ["ls"], 0x7ffe1c1e6e30 /* 35 vars */) = 0
+brk(NULL)                               = 0x558e386ad000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffe981079f0) = -1 EINVAL (Invalid argument)
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+```
 
 
