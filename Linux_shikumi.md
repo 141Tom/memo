@@ -176,7 +176,31 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ldd pause2
 
 ## 第2章 プロセス管理（基礎編）
 
-ファーム
+プロセスの確認
+
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ps aux | grep ishii_t+
+ishii_t+     922  0.0  0.1  16248  9616 pts/0    Ss   09:23   0:00 -bash
+ishii_t+    1133  0.0  0.1  19212  9832 ?        Ss   09:23   0:00 /lib/systemd/systemd --user
+ishii_t+    1134  0.0  0.0 171724  3716 ?        S    09:23   0:00 (sd-pam)
+ishii_t+    1163  0.0  0.1 281404 14048 ?        Ssl  09:23   0:00 /usr/bin/pulseaudio --daemonize=no --log-target=journal
+ishii_t+    1177  0.0  0.1  15644  8772 pts/1    S+   09:23   0:00 -bash
+ishii_t+    1355  0.0  0.0   7116  4020 ?        Ss   09:23   0:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+ishii_t+    1522  0.0  0.2  74260 20896 ?        S    09:23   0:00 fcitx
+ishii_t+    1534  0.0  0.0   7116  3044 ?        Ss   09:23   0:00 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --config-file /usr/share/fcitx/dbus/daemon.conf
+ishii_t+    1538  0.0  0.0   5392   200 ?        SN   09:23   0:00 /usr/bin/fcitx-dbus-watcher unix:abstract=/tmp/dbus-Q9XSs0L0b5,guid=732f9d58ea0dd495f08b56bc64af43f3 1534
+ishii_t+    1539  0.0  0.3  73664 30876 ?        SLl  09:23   0:00 /usr/lib/mozc/mozc_server
+ishii_t+   14479  0.0  0.0   9136   576 pts/0    T    11:38   0:00 wc -l
+ishii_t+   14541  0.0  0.0  12532  3220 pts/0    R+   11:39   0:00 ps aux
+ishii_t+   14542  0.0  0.0  10076   652 pts/0    S+   11:39   0:00 grep --color=auto ishii_t+
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ps aux --no-header | wc -l
+61
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ls | wc -l
+8
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$
+```
+
+
 
 
 
