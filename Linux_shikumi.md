@@ -231,9 +231,9 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./fork.py
 子プロセス, pid=14834, 親プロセス, pid=14833
 ```
 
-2. os.execv() 関数 を呼び出す。
-2. 現在のプロセスのメモリを、新しいプロセスのデータで上書きする。
-2. 新しいプロセスの最初に実行すべき命令を実行開始する。
+1. os.execv() 関数 を呼び出す。
+1. 現在のプロセスのメモリを、新しいプロセスのデータで上書きする。
+1. 新しいプロセスの最初に実行すべき命令(エントリーポイント)を実行開始する。
 
 
 ```
@@ -271,4 +271,96 @@ drwxr-xr-x 4 ishii_tdd ishii_tdd 4096 Jul 13 13:13 ..
 ```
 
 
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ cc -o pause -no-pie pause.c
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ readelf -h pause
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x401050
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          14648 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         13
+  Size of section headers:           64 (bytes)
+  Number of section headers:         31
+  Section header string table index: 30
+
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ readelf -S pause
+There are 31 section headers, starting at offset 0x3938:
+
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .interp           PROGBITS         0000000000400318  00000318
+       000000000000001c  0000000000000000   A       0     0     1
+  [ 2] .note.gnu.propert NOTE             0000000000400338  00000338
+       0000000000000020  0000000000000000   A       0     0     8
+  [ 3] .note.gnu.build-i NOTE             0000000000400358  00000358
+       0000000000000024  0000000000000000   A       0     0     4
+  [ 4] .note.ABI-tag     NOTE             000000000040037c  0000037c
+       0000000000000020  0000000000000000   A       0     0     4
+  [ 5] .gnu.hash         GNU_HASH         00000000004003a0  000003a0
+
+```
+
+プログラムから作成したプロセスのメモリマップは、/proc/<pid>/mapsのファイルによって得られる。
+用が済んだら、pauseプロセスをkillする。
+
+
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./pause &
+[2] 15059
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ cat /proc/15059/maps
+00400000-00401000 r--p 00000000 08:20 348522                             /home/ishii_tdd/hoge02/Linux_shikumi/2-1/pause
+00401000-00402000 r-xp 00001000 08:20 348522                             /home/ishii_tdd/hoge02/Linux_shikumi/2-1/pause
+00402000-00403000 r--p 00002000 08:20 348522                             /home/ishii_tdd/hoge02/Linux_shikumi/2-1/pause
+00403000-00404000 r--p 00002000 08:20 348522                             /home/ishii_tdd/hoge02/Linux_shikumi/2-1/pause
+00404000-00405000 rw-p 00003000 08:20 348522                             /home/ishii_tdd/hoge02/Linux_shikumi/2-1/pause
+7fdc48b8b000-7fdc48bad000 r--p 00000000 08:20 12573                      /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fdc48bad000-7fdc48d25000 r-xp 00022000 08:20 12573                      /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fdc48d25000-7fdc48d73000 r--p 0019a000 08:20 12573                      /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fdc48d73000-7fdc48d77000 r--p 001e7000 08:20 12573                      /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fdc48d77000-7fdc48d79000 rw-p 001eb000 08:20 12573                      /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fdc48d79000-7fdc48d7f000 rw-p 00000000 00:00 0
+7fdc48d8f000-7fdc48d90000 r--p 00000000 08:20 12438                      /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fdc48d90000-7fdc48db3000 r-xp 00001000 08:20 12438                      /usr/lib/x86_64-linux-gnu/ld-2.31.so
+```
+
+プロセスの親子関係
+システムの初期化について
+1. コンピュータの電源を入れる
+2. BIOSやUFEIなどのファームウェアが起動して、ハードウェアを初期化する
+3. ファームウェアがGRUBなどのブートローダを起動する
+4. ブートローダがOSカーネル（Linuxカーネル）を起動する
+5. Linuxカーネルがinit プロセスを起動する。
+6. initプロセスが子プロセス.....さらに子プロセスに伝えていく
+
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ pstree -p
+systemd(1)─┬─ModemManager(340)─┬─{ModemManager}(360)
+           │                   └─{ModemManager}(366)
+           ├─NetworkManager(282)─┬─{NetworkManager}(358)
+           │                     └─{NetworkManager}(361)
+           ├─accounts-daemon(279)─┬─{accounts-daemon}(284)
+           │                      └─{accounts-daemon}(337)
+           ├─agetty(442)
+           ├─atd(435)
+           ├─avahi-daemon(280)───avahi-daemon(319)
+           ├─containerd(10354)─┬─{containerd}(10357)
+           │                   ├─{containerd}(10358)
+           │                   ├─{containerd}(10359)
+           │                   ├─{containerd}(10360)
+```
 
