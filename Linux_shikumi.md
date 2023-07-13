@@ -199,7 +199,36 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/1-1$ ls | wc -l
 8
 ```
 
+1. fork()関数を呼び出してプロセスを分岐させる。
+1. 子プロセス用の領域を確保して、親プロセスのメモリをコピーする。
+1. 親プロセス、子プロセスは両方ともfork()関数から解放される。
+1. 親プロセスと子プロセスでは、fork()関数の戻り値が異なる。
+1. fork()の戻り値に関しては、親プロセスでは子プロセスのPIDとなり、子プロセスでは0となります。
 
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ cat fork.py
+#!/usr/bin/python3
+import os, sys
+# fork()関数を呼び出してプロセスを分岐させる。
+ret = os.fork()
+# 子プロセス用の領域を確保して、親プロセスのメモリをコピーする。
+# 親プロセス、子プロセスは両方ともfork()関数から解放される。
+# 親プロセスと子プロセスでは、fork()関数の戻り値が異なる。
 
+# 子プロセスの戻り値は、0
+# 子プロセスが動いている。
+if ret == 0:
+        print("子プロセス, pid={}, 親プロセス, pid={}".format(os.getpid(), os.getppid()))
+        exit()
+# 親プロセスの戻り値は、子プロセスのpid
+# 親プロセスが動いている
+elif ret > 0:
+        print("親プロセス, pid={}, 子プロセス, pid={}".format(os.getpid(), ret))
+        exit()
+sys.exit(1)
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./fork.py
+親プロセス, pid=14833, 子プロセス, pid=14834
+子プロセス, pid=14834, 親プロセス, pid=14833
+```
 
 
