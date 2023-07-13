@@ -232,3 +232,37 @@ ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./fork.py
 ```
 
 
+```
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ cat fork-and-exec.py
+#!/usr/bin/python3
+import os, sys
+# fork()関数を呼び出してプロセスを分岐させる。
+ret = os.fork()
+# 子プロセス用の領域を確保して、親プロセスのメモリをコピーする。
+# 親プロセス、子プロセスは両方ともfork()関数から解放される。
+# 親プロセスと子プロセスでは、fork()関数の戻り値が異なる。
+
+# 子プロセスの戻り値は、0
+# 子プロセスが動いている。
+if ret == 0:
+        print("子プロセス, pid={}, 親プロセス, pid={}".format(os.getpid(), os.getppid()))
+        os.execv("/bin/ls", ["/bin/ls", "-la"])
+        exit()
+# 親プロセスの戻り値は、子プロセスのpid
+# 親プロセスが動いている
+elif ret > 0:
+        print("親プロセス, pid={}, 子プロセス, pid={}".format(os.getpid(), ret))
+        os.execv("/bin/echo", ["/bin/echo", "pid={} からよろしく".format(os.getpid())])
+        exit()
+sys.exit(1)
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ ./fork-and-exec.py
+親プロセス, pid=14988, 子プロセス, pid=14989
+子プロセス, pid=14989, 親プロセス, pid=14988
+pid=14988 からよろしく
+ishii_tdd@PCS27515:~/hoge02/Linux_shikumi/2-1$ total 16
+drwxr-xr-x 2 ishii_tdd ishii_tdd 4096 Jul 13 14:32 .
+drwxr-xr-x 4 ishii_tdd ishii_tdd 4096 Jul 13 13:13 ..
+-rwxr-xr-x 1 ishii_tdd ishii_tdd  913 Jul 13 14:32 fork-and-exec.py
+-rwxr-xr-x 1 ishii_tdd ishii_tdd  785 Jul 13 14:02 fork.py
+```
+
